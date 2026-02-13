@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beanio xmlns="http://www.beanio.org/2012/03"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.beanio.org/2012/03 
+                            http://www.beanio.org/2012/03/mapping.xsd">
+
+    <!-- Original detail record stream -->
+    <stream name="detailRecordStream" format="delimited">
+        <parser>
+            <property name="delimiter" value="|"/>
+        </parser>
+        
+        <record name="header" class="com.example.beanio.FileHeader" minOccurs="1" maxOccurs="1">
+            <field name="recordType" literal="HEADER" />
+            <field name="masterId" />
+            <field name="businessCenterCode" />
+            <field name="fileDate" format="yyyyMMdd" />
+            <field name="recordCount" />
+        </record>
+        
+        <record name="detail" class="com.example.model.DetailRecord" minOccurs="0" maxOccurs="unbounded">
+            <field name="recordType" />
+            <field name="detailId" />
+            <field name="accountNumber" />
+            <field name="customerName" />
+            <field name="amount" />
+            <field name="currency" />
+            <field name="description" />
+            <field name="transactionDate" format="yyyyMMddHHmmss" />
+        </record>
+        
+        <record name="trailer" class="com.example.beanio.FileTrailer" minOccurs="1" maxOccurs="1">
+            <field name="recordType" literal="TRAILER" />
+            <field name="totalRecords" />
+            <field name="totalAmount" />
+        </record>
+    </stream>
+
+    <!-- Enhanced detail record stream with flattened JSON data -->
+    <stream name="enhancedDetailRecordStream" format="delimited">
+        <parser>
+            <property name="delimiter" value="|"/>
+        </parser>
+        
+        <record name="header" class="com.example.beanio.EnhancedFileHeader" minOccurs="1" maxOccurs="1">
+            <field name="recordType" literal="HEADER" />
+            <field name="masterId" />
+            <field name="businessCenterCode" />
+            <field name="fileDate" format="yyyyMMdd" />
+            <field name="recordCount" />
+            <field name="fileVersion" />
+        </record>
+        
+        <!-- Flattened enhanced detail record - extracts fields from JSONB -->
+        <record name="detail" class="com.example.beanio.EnhancedDetailOutput" minOccurs="0" maxOccurs="unbounded">
+            <!-- Basic fields -->
+            <field name="recordType" />
+            <field name="detailId" />
+            <field name="accountNumber" />
+            <field name="customerName" />
+            <field name="amount" />
+            <field name="currency" />
+            <field name="description" />
+            <field name="transactionDate" format="yyyyMMddHHmmss" />
+            
+            <!-- Flattened JSON fields from TransactionData -->
+            <field name="transactionId" />
+            <field name="transactionType" />
+            <field name="customerId" />
+            <field name="customerEmail" />
+            <field name="customerPhone" />
+            <field name="customerCity" />
+            <field name="customerState" />
+            <field name="customerCountry" />
+            <field name="merchantId" />
+            <field name="merchantName" />
+            <field name="merchantCategory" />
+            <field name="paymentType" />
+            <field name="paymentLastFour" />
+            <field name="paymentBrand" />
+            <field name="riskScore" />
+            <field name="status" />
+            <field name="itemCount" />
+        </record>
+        
+        <record name="trailer" class="com.example.beanio.EnhancedFileTrailer" minOccurs="1" maxOccurs="1">
+            <field name="recordType" literal="TRAILER" />
+            <field name="totalRecords" />
+            <field name="totalAmount" />
+            <field name="averageRiskScore" />
+            <field name="uniqueCustomers" />
+        </record>
+    </stream>
+</beanio>

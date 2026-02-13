@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beanio xmlns="http://www.beanio.org/2012/03"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.beanio.org/2012/03 
+                            http://www.beanio.org/2012/03/mapping.xsd">
+
+    <stream name="detailRecordStream" format="delimited">
+        <parser>
+            <property name="delimiter" value="|"/>
+        </parser>
+        
+        <!-- Header Record -->
+        <record name="header" class="com.example.beanio.FileHeader" minOccurs="1" maxOccurs="1">
+            <field name="recordType" literal="HEADER" />
+            <field name="masterId" />
+            <field name="businessCenterCode" />
+            <field name="fileDate" format="yyyyMMdd" />
+            <field name="recordCount" />
+        </record>
+        
+        <!-- Detail Record -->
+        <record name="detail" class="com.example.model.DetailRecord" minOccurs="0" maxOccurs="unbounded">
+            <field name="recordType" />
+            <field name="detailId" />
+            <field name="accountNumber" />
+            <field name="customerName" />
+            <field name="amount" />
+            <field name="currency" />
+            <field name="description" />
+            <field name="transactionDate" format="yyyyMMddHHmmss" />
+        </record>
+        
+        <!-- Trailer Record -->
+        <record name="trailer" class="com.example.beanio.FileTrailer" minOccurs="1" maxOccurs="1">
+            <field name="recordType" literal="TRAILER" />
+            <field name="totalRecords" />
+            <field name="totalAmount" />
+        </record>
+    </stream>
+</beanio>
