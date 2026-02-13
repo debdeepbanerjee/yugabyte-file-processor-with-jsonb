@@ -2,6 +2,10 @@
 
 A highly scalable Spring Boot application that processes records from YugabyteDB and generates files using BeanIO, leveraging Java 21 virtual threads for non-blocking I/O operations.
 
+## Author
+
+- **Name**: Debdeep Banerjee
+
 ## Features
 
 - ✅ **Java 21 Virtual Threads**: All I/O operations use virtual threads for maximum scalability
